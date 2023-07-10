@@ -14,7 +14,7 @@ def canUnlockAll(boxes):
         keys = boxes[current_box]
 
         for key in keys:
-            if not opened_boxes[key]:
+            if key < len(boxes) and not opened_boxes[key]:
                 opened_boxes[key] = True
                 queue.append(key)
 
