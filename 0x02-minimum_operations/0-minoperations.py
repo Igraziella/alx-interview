@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """method that calculates minimum operations"""
-
-
 import math
+
 
 def minOperations(n):
     """calculates the fewest number of operations needed
