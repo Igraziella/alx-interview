@@ -1,24 +1,29 @@
 #!/usr/bin/python3
-"""a script that reads stdin line by line and computes metrics"""
+"""
+A script that reads stdin line by line and computes metrics.
+"""
+
 import sys
 import signal
-
 
 # Initialize metrics
 file_sizes = []
 status_codes = {}
 
+
 # Helper function to print statistics
 def print_statistics():
     total_size = sum(file_sizes)
-    print(f"Total file size: {total_size}")
+    print(f"File size: {total_size}")
     for status_code in sorted(status_codes):
         print(f"{status_code}: {status_codes[status_code]}")
+
 
 # Signal handler for keyboard interruption (CTRL + C)
 def signal_handler(signal, frame):
     print_statistics()
     sys.exit(0)
+
 
 signal.signal(signal.SIGINT, signal_handler)
 
