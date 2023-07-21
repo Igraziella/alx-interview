@@ -25,7 +25,7 @@ def process_log(lines):
             print_statistics(total_size, status_counts)
 
 def print_statistics(total_size, status_counts):
-    print(f"File size: {total_size}")
+    print(f"Total file size: {total_size}")
     for status_code in sorted(status_counts.keys()):
         print(f"{status_code}: {status_counts[status_code]}")
     print()
