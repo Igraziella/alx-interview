@@ -3,55 +3,42 @@
 A script that reads stdin line by line and computes metrics.
 """
 
-import sys
-import signal
+import re
 
-# Initialize metrics
-file_sizes = []
-status_codes = {}
+def process_log(lines):
+    """Computes metrics line by line"""
+    total_size = 0
+    status_counts = {}
 
+    for i, line in enumerate(lines, start=1):
+        match = re.match(r'^\d+\.\d+\.\d+\.\d+ - \[.*\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)$', line)
+        if match:
+            status_code, file_size = int(match.group(1)), int(match.group(2))
+            total_size += file_size
 
-# Helper function to print statistics
-def print_statistics():
-    total_size = sum(file_sizes)
+            if status_code in status_counts:
+                status_counts[status_code] += 1
+            else:
+                status_counts[status_code] = 1
+
+        if i % 10 == 0:
+            print_statistics(total_size, status_counts)
+
+def print_statistics(total_size, status_counts):
     print(f"File size: {total_size}")
-    for status_code in sorted(status_codes):
-        print(f"{status_code}: {status_codes[status_code]}")
+    for status_code in sorted(status_counts.keys()):
+        print(f"{status_code}: {status_counts[status_code]}")
+    print()
 
-
-# Signal handler for keyboard interruption (CTRL + C)
-def signal_handler(signal, frame):
-    print_statistics()
-    sys.exit(0)
-
-
-signal.signal(signal.SIGINT, signal_handler)
-
-try:
-    line_count = 0
-    for line in sys.stdin:
-        line_count += 1
-        line = line.strip()
-        # Parse the line using a simple split method
-        parts = line.split()
-        if len(parts) >= 9:
-            ip_address = parts[0]
-            date = parts[3][1:]  # Remove the leading '[' from the date
-            status_code = parts[-2]
-            file_size = int(parts[-1])
-
-            # Accumulate file sizes
-            file_sizes.append(file_size)
-
-            # Count status codes
-            if status_code.isdigit():
-                status_codes[int(status_code)] = status_codes.get(int(status_code), 0) + 1
-
-        # Print statistics after every 10 lines
-        if line_count % 10 == 0:
-            print_statistics()
-
-except KeyboardInterrupt:
-    # Handle keyboard interruption (CTRL + C)
-    print_statistics()
-    sys.exit(0)
+if __name__ == "__main__":
+    log_lines = []
+    try:
+        while True:
+            line = input()
+            log_lines.append(line)
+            if len(log_lines) % 10 == 0:
+                process_log(log_lines)
+                log_lines.clear()
+    except KeyboardInterrupt:
+        if log_lines:
+            process_log(log_lines)
