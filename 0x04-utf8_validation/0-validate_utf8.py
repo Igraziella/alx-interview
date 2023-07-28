@@ -7,7 +7,7 @@ def validUTF8(data):
     a valid UTF-8 encoding
     """
     num_bytes_to_follow = 0
-    
+
     for num in data:
         if num_bytes_to_follow > 0:
             if (num >> 6) != 0b10:
@@ -25,5 +25,5 @@ def validUTF8(data):
                 num_bytes_to_follow = 3
             else:
                 return False
-    
+
     return num_bytes_to_follow == 0
