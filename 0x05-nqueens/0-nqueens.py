@@ -4,6 +4,10 @@ import sys
 
 
 def is_safe(board, row, col):
+    """Prints a no of usage If the user called the program
+    with the wrong number of arguments, If the user called
+    the program with the wrong number of arguments.
+    """
     for i in range(col):
         if board[row][i] == 1:
             return False
