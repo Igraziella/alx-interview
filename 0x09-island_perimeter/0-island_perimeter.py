@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""return islandm perimeter"""
+"""return island perimeter"""
 
 def island_perimeter(grid):
     """
@@ -13,7 +13,6 @@ def island_perimeter(grid):
     Grid is rectangular, with its width and height not exceeding 100
     """
     perimeter = 0
-
     rows = len(grid)
     cols = len(grid[0])
 
