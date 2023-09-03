@@ -4,15 +4,16 @@
 
 def island_perimeter(grid):
     """
-    returns the perimeter of an island described in grid:
+    Return the perimeter of an island described in grid:
 
     Grid is a list of integers:
-    0 represents water
-    1 represents land
+    - 0 represents water
+    - 1 represents land
     Each cell is square with a side length of 1
     Cells are not connected diagonally but horizontally/vertically
     Grid is rectangular, with it's width and height not exceeding 100
     """
+
     perimeter = 0
 
     rows = len(grid)
